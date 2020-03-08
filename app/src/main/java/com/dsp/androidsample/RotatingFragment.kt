@@ -7,19 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.dsp.androidsample.Logger.i
 import com.dsp.androidsample.MainActivity.Companion.TAG
 import kotlinx.android.synthetic.main.rotating_fragment.*
 import org.jetbrains.annotations.TestOnly
 
+class RotatingViewModelFactory : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return modelClass.newInstance()
+    }
+}
 
 class RotatingFragment : Fragment() {
     companion object {
         fun newInstance() = RotatingFragment()
     }
 
-    private lateinit var viewModel: RotatingViewModel
+    var viewModelFactory: ViewModelProvider.Factory? = RotatingViewModelFactory()
+    lateinit var viewModel: RotatingViewModel
 
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
@@ -28,8 +35,8 @@ class RotatingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         i { "onCreate" }
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(RotatingViewModel::class.java)
-//        retainInstance = true
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RotatingViewModel::class.java)
+        retainInstance = true
     }
 
     override fun onCreateView(
