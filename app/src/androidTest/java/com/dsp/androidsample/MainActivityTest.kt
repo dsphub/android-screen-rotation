@@ -1,7 +1,5 @@
 package com.dsp.androidsample
 
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -11,15 +9,13 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.dsp.androidsample.MainActivity.Companion.TAG
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.*
-import org.mockito.BDDMockito.given
 import org.mockito.BDDMockito.then
-import org.mockito.Mockito.spy
-import org.mockito.Mockito.verify
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.Spy
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
