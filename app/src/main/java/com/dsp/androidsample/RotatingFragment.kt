@@ -1,6 +1,6 @@
 package com.dsp.androidsample
 
-import android.app.Activity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,10 +28,6 @@ class RotatingFragment : Fragment() {
     var viewModelFactory: ViewModelProvider.Factory? = RotatingViewModelFactory()
     lateinit var viewModel: RotatingViewModel
 
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         i { "onCreate" }
         super.onCreate(savedInstanceState)
@@ -48,10 +44,15 @@ class RotatingFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        i { "onViewCreated" }
+        i { "onViewCreated orientation=${resources.configuration.orientation}" }
         super.onViewCreated(view, savedInstanceState)
+        textView_state.text =
+            when (resources.configuration.orientation) {
+                Configuration.ORIENTATION_PORTRAIT -> "Portrait"
+                Configuration.ORIENTATION_LANDSCAPE -> "Landscape"
+                else -> "Undefined"
+            }
         button_finish.setOnClickListener {
-//            (activity as MainActivity).removeFragment()
             removeFragment()
         }
     }
@@ -82,20 +83,12 @@ class RotatingFragment : Fragment() {
         super.onStop()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     override fun onDestroy() {
         i { "onDestroy" }
         super.onDestroy()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    fun removeFragment() {
+    private fun removeFragment() {
         activity?.let {
             it.supportFragmentManager.run {
                 val fragment = findFragmentByTag(TAG)

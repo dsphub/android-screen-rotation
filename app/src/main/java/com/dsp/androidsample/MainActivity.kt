@@ -11,19 +11,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        i { "onCreate" }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        showFragment()
+        if (savedInstanceState == null) {
+            showFragment()
+        }
     }
 
     private fun showFragment() {
-        val fragment = supportFragmentManager.findFragmentByTag(TAG)
-        if (fragment == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, RotatingFragment.newInstance(), TAG)
+        i { "showFragment" }
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, RotatingFragment.newInstance())
 //                .addToBackStack(null)
-                .commit()
-        }
+            .commit()
     }
 
     fun showFragment(fragment: Fragment) {
