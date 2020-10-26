@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.dsp.androidsample.Logger.d
 import com.dsp.androidsample.Logger.i
 import com.dsp.androidsample.MainActivity.Companion.TAG
 import kotlinx.android.synthetic.main.rotating_fragment.*
@@ -33,13 +35,17 @@ class RotatingFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RotatingViewModel::class.java)
         retainInstance = true
+        viewModel.name.observe(this, Observer {
+            d { "name=$it" }
+            editText_name.setText(it)
+        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        i { "onCreateView" }
+        i { "onCreateView hcode=${this.hashCode()}" }
         return inflater.inflate(R.layout.rotating_fragment, container, false)
     }
 
@@ -55,6 +61,12 @@ class RotatingFragment : Fragment() {
         button_finish.setOnClickListener {
             removeFragment()
         }
+        viewModel.isProgressVisible.observe(this, Observer {
+            d { "progress observe=$it" }
+            progressBar_progress.visibility = if (it) View.VISIBLE else View.GONE
+            textView_error.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
